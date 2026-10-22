@@ -1,3 +1,11 @@
-id,pregunta,fuente_esperada,palabra_clave,respuesta_esperada
-1,How many attention heads does the base Transformer use?,attention_paper.pdf,8,h = 8 heads con dk = dv = 64
-2,What are the two RAG model variants?,rag_paper.pdf,RAG-Token,RAG-Sequence y RAG-Token
+id,pregunta,fuente_esperada,palabra_clave
+1,How many attention heads does the base Transformer use?,attention_paper.pdf,parallel attention
+2,What are the two RAG model variants?,rag_paper.pdf,RAG-Token
+3,What BLEU score did the big Transformer achieve on English-to-German?,attention_paper.pdf,28.4
+4,Why are dot products scaled in attention?,attention_paper.pdf,softmax
+5,Which dense retriever does RAG use?,rag_paper.pdf,DPR
+6,What seq2seq model is the RAG generator?,rag_paper.pdf,BART
+7,How many layers does the Transformer encoder have?,attention_paper.pdf,identical layers
+8,What optimizer was used to train the Transformer?,attention_paper.pdf,Adam
+9,Which knowledge source is used as non-parametric memory in RAG?,rag_paper.pdf,Wikipedia
+10,What positional encoding functions does the Transformer use?,attention_paper.pdf,sine
