@@ -16,23 +16,23 @@
 | T4 | El invariante de FAISSVectorStore | 2 | ✅ | [RESPUESTAS T4](RESPUESTAS.md) |
 | T5 | El costo de la fuerza bruta | 2 | ✅ | [RESPUESTAS T5](RESPUESTAS.md) |
 | A1 | Ejecuta la app RAG de punta a punta | 4 | ✅ | [notebook 02b](notebooks/02b_rag_app_nvidia_nim_colab.ipynb) · [RESPUESTAS A1](RESPUESTAS.md#a1--ejecuta-la-app-rag-de-punta-a-punta) |
-| A2 | Tu propio corpus de documentos | 6 | ⬜ | |
-| A3 | Ingeniería del prompt (antes y después) | 5 | ⬜ | |
-| A4 | Muestra el score de similitud en las fuentes | 5 | ⬜ | |
+| A2 | Tu propio corpus de documentos | 6 | ✅ | [data/company_documents.json](data/company_documents.json) · [captura](evidencias/A2_corpus.png) |
+| A3 | Ingeniería del prompt (antes y después) | 5 | ✅ | [RESPUESTAS A3](RESPUESTAS.md) |
+| A4 | Muestra el score de similitud en las fuentes | 5 | ✅ | [captura](evidencias/A4_scores.png) · [RESPUESTAS A4](RESPUESTAS.md) |
 | B1 | Ejecuta el RAG de papers y evalúa con el ground truth | 6 | ✅ | [notebook 03](notebooks/03_rag_workshop_papers_nvidia_nim_colab.ipynb) · [RESPUESTAS B1](RESPUESTAS.md#b1--ejecuta-el-rag-de-papers-y-evalúa-con-el-ground-truth) |
-| B2 | Experimentos con chunk_size, k y score_threshold | 8 | ⬜ | |
-| B3 | Preguntas trampa: ¿el RAG admite que no sabe? | 6 | ⬜ | |
-| B4 | Preguntas en español sobre papers en inglés | 5 | ⬜ | |
-| B5 | Escribe tu propio quiz con ground truth | 5 | ⬜ | |
-| R1 | Reflexión final con tus datos | 10 | ⬜ | |
-| C1 | HNSW contra fuerza bruta con FAISS (reto) | 15 | ⬜ | |
+| B2 | Experimentos con chunk_size, k y score_threshold | 8 | ✅ | [notebook 03](notebooks/03_rag_workshop_papers_nvidia_nim_colab.ipynb) · [RESPUESTAS B2](RESPUESTAS.md) |
+| B3 | Preguntas trampa: ¿el RAG admite que no sabe? | 6 | ✅ | [RESPUESTAS B3](RESPUESTAS.md) |
+| B4 | Preguntas en español sobre papers en inglés | 5 | ✅ | [RESPUESTAS B4](RESPUESTAS.md) |
+| B5 | Escribe tu propio quiz con ground truth | 5 | ✅ | [RESPUESTAS B5](RESPUESTAS.md) |
+| R1 | Reflexión final con tus datos | 10 | ✅ | [RESPUESTAS R1](RESPUESTAS.md) |
+| C1 | HNSW contra fuerza bruta con FAISS (reto) | 15 | ✅ | [notebooks/04_challenges.ipynb](notebooks/04_challenges.ipynb) · [gráfica](evidencias/C1_recall.png) |
 | C2 | Un tercer paper: el RAG que explica HNSW (reto) | 12 | ⬜ | |
 | C3 | App Gradio para los papers con filtro por paper (reto) | 15 | ⬜ | |
-| C4 | Evaluación automática de la recuperación (reto) | 12 | ⬜ | |
-| C5 | MMR frente a similitud pura (reto) | 8 | ⬜ | |
+| C4 | Evaluación automática de la recuperación (reto) | 12 | ✅ | [eval/preguntas.csv](eval/preguntas.csv) · [RESPUESTAS C4](RESPUESTAS.md) |
+| C5 | MMR frente a similitud pura (reto) | 8 | ✅ | [RESPUESTAS C5](RESPUESTAS.md) |
 | C6 | Persistencia del índice en disco (reto) | 8 | ⬜ | |
 
-**Autoevaluación:** 20 / 100 puntos (T1–T5, A1, B1).
+**Autoevaluación:** 100 / 100 puntos — Núcleo 70/70 (T1–T5, A1–A4, B1–B5, R1) · Retos 30/30 (C1 15 + C4 12 + C5 8 = 35, tope 30).
 
 ## Cómo ejecutar mis notebooks
 
@@ -43,6 +43,9 @@
 > No incluyas tu API key en ningún archivo de este repositorio.
 
 ## Decisiones y aprendizajes
+
+- Los experimentos del notebook 03 (B2–B5, C4, C5) y del 02b (A1–A4) están en `notebooks/experimentos_03.py` y `notebooks/experimentos_02b.py`; la última celda de cada notebook los ejecuta y muestra las salidas.
+- El `score_threshold` de LangChain no filtró nada en ningún experimento: trabaja sobre un score normalizado, distinto del coseno que muestra `similarity_search_with_score`.
 
 - Monté de punta a punta una app RAG en Colab: embeddings con `nvidia/nemotron-3-embed-1b`, índice Qdrant en memoria y generación con `nvidia/nemotron-3-super-120b-a12b`.
 - La interfaz se publicó con Gradio (`share=True`), que genera un enlace público temporal mientras el runtime de Colab sigue activo.
