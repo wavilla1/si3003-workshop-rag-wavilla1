@@ -10,11 +10,11 @@
 
 | ID | Tarea | Puntos | Hecha | Evidencia |
 |---|---|---:|:---:|---|
-| T1 | Cuántos nodos viven en cada capa | 2 | ⬜ | |
-| T2 | ef, k y el tamaño de la cola | 2 | ⬜ | |
-| T3 | Inserción frente a búsqueda | 2 | ⬜ | |
-| T4 | El invariante de FAISSVectorStore | 2 | ⬜ | |
-| T5 | El costo de la fuerza bruta | 2 | ⬜ | |
+| T1 | Cuántos nodos viven en cada capa | 2 | ✅ | [RESPUESTAS T1](RESPUESTAS.md) |
+| T2 | ef, k y el tamaño de la cola | 2 | ✅ | [RESPUESTAS T2](RESPUESTAS.md) |
+| T3 | Inserción frente a búsqueda | 2 | ✅ | [RESPUESTAS T3](RESPUESTAS.md) |
+| T4 | El invariante de FAISSVectorStore | 2 | ✅ | [RESPUESTAS T4](RESPUESTAS.md) |
+| T5 | El costo de la fuerza bruta | 2 | ✅ | [RESPUESTAS T5](RESPUESTAS.md) |
 | A1 | Ejecuta la app RAG de punta a punta | 4 | ✅ | [notebook 02b](notebooks/02b_rag_app_nvidia_nim_colab.ipynb) · [RESPUESTAS A1](RESPUESTAS.md#a1--ejecuta-la-app-rag-de-punta-a-punta) |
 | A2 | Tu propio corpus de documentos | 6 | ⬜ | |
 | A3 | Ingeniería del prompt (antes y después) | 5 | ⬜ | |
@@ -32,7 +32,7 @@
 | C5 | MMR frente a similitud pura (reto) | 8 | ⬜ | |
 | C6 | Persistencia del índice en disco (reto) | 8 | ⬜ | |
 
-**Autoevaluación:** 10 / 100 puntos (A1 + B1).
+**Autoevaluación:** 20 / 100 puntos (T1–T5, A1, B1).
 
 ## Cómo ejecutar mis notebooks
 

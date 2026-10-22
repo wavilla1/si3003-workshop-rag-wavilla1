@@ -7,37 +7,82 @@ Escribe aquí tus respuestas con tus propias palabras. Pega tablas, resultados y
 
 ## T1 · Cuántos nodos viven en cada capa
 
-_Evidencia:_ …
+_Evidencia:_ cálculo a mano + simulación en Python (abajo).
 
 _Mi respuesta / análisis:_
+
+Con M = 16, la probabilidad de que un vector llegue al menos a la capa k es 16⁻ᵏ. Con N = 1.000.000:
+
+| Capa | Teórico (a mano) | Simulado |
+|---|---:|---:|
+| ≥ 1 | 1.000.000 / 16 = 62.500 | 62.085 |
+| ≥ 2 | 1.000.000 / 256 ≈ 3.906 | 3.972 |
+| ≥ 3 | 1.000.000 / 4.096 ≈ 244 | 231 |
+
+```python
+import numpy as np, math
+rng = np.random.default_rng(42); N = 1_000_000; M = 16; mL = 1 / math.log(M)
+l = np.floor(-np.log(rng.random(N)) * mL).astype(int)
+for k in (1, 2, 3): print(k, N / M**k, (l >= k).sum())   # capa máxima obtenida: 5
+```
+
+La simulación coincide con la teoría: cada capa tiene unas 16 veces menos nodos que la de abajo.
+
+Que haya pocos hubs arriba es bueno porque en las capas altas la búsqueda da "saltos largos" entre muy pocos nodos y llega rápido a la región correcta del espacio. Después solo tiene que refinar en las capas bajas, en vez de recorrer el millón de nodos de la capa 0.
 
 
 ## T2 · ef, k y el tamaño de la cola
 
-_Evidencia:_ …
-
 _Mi respuesta / análisis:_
+
+1. **k = 10 con ef = 5:** la cola de candidatos solo guarda 5 elementos, así que la búsqueda no puede devolver 10 vecinos (o devuelve menos de los pedidos). Por eso ef debe ser siempre ≥ k.
+2. **Valor inicial:** conviene empezar con ef igual o un poco mayor que k, y subirlo cuando el recall no es suficiente. Más ef mejora la precisión pero hace cada consulta más lenta.
+3. **Cambiable en producción:** **ef** (ef_search), porque solo controla cuántos candidatos se exploran al buscar. **ef_construction** se usó para decidir las conexiones al construir el grafo; cambiarlo implica reconstruir el índice.
 
 
 ## T3 · Inserción frente a búsqueda
 
-_Evidencia:_ …
-
 _Mi respuesta / análisis:_
+
+| | Inserción | Búsqueda | Por qué |
+|---|---|---|---|
+| ¿Se sortea la capa? | Sí | No | Solo un vector nuevo necesita una capa máxima; la consulta no se guarda en el grafo, solo lo recorre desde la entrada. |
+| Valor de ef en las capas altas | 1 | 1 | En las capas altas solo interesa bajar rápido hacia el vecino más cercano; con 1 candidato basta. |
+| Parámetro de la fase principal | ef_construction | ef (ef_search) | Al insertar, ef_construction define cuántos candidatos se evalúan para elegir buenas conexiones; al buscar, ef define cuántos se exploran para encontrar los k vecinos. |
+| ¿Modifica el índice? | Sí | No | La inserción agrega el nodo y sus aristas; la búsqueda es solo lectura. |
+
+En el notebook 03, `vectorstore.add_documents(...)` dispara la **inserción** y `retriever.invoke(...)` dispara la **búsqueda**.
 
 
 ## T4 · El invariante de FAISSVectorStore
 
-_Evidencia:_ …
-
 _Mi respuesta / análisis:_
+
+| Posición | Antes | Después de borrar B (solo en `self.documents`) |
+|---|---|---|
+| 0 | A | A |
+| 1 | B | C |
+| 2 | C | D |
+| 3 | D | — (no existe) |
+
+FAISS no se enteró del borrado, así que una búsqueda que antes daba [1, 2, 3] (B, C, D) sigue devolviendo los índices [1, 2, 3], pero ahora se traducen a **[C, D, IndexError]**:
+
+- Posiciones 1 y 2 → **error silencioso**: devuelven C y D cuando el vector encontrado era el de B y el de C. La respuesta es equivocada y no hay ninguna excepción.
+- Posición 3 → **lanza excepción** (IndexError), porque la lista ya solo tiene 3 elementos.
+
+Mantener sincronizados a mano dos estructuras (índice y lista de documentos) es frágil. Bases vectoriales como Qdrant guardan el vector, el payload y un id en el mismo registro, y permiten borrar o actualizar por id, así que este desajuste no puede ocurrir.
 
 
 ## T5 · El costo de la fuerza bruta
 
-_Evidencia:_ …
-
 _Mi respuesta / análisis:_
+
+1.000.000 vectores × 768 dimensiones ≈ 7,68 × 10⁸ multiplicaciones por consulta.
+Con 100 consultas por segundo: 7,68 × 10⁸ × 100 = **7,68 × 10¹⁰ multiplicaciones por segundo**.
+
+Ser exacto deja de ser viable porque ese costo crece linealmente con el número de vectores: cada consulta tiene que compararse contra todo el corpus, y con más datos o más usuarios la latencia y el hardware necesario se disparan.
+
+En ANN se sacrifica un poco de exactitud (a veces no se devuelve el vecino más cercano real, recall < 100 %) y a cambio se gana muchísima velocidad, porque solo se visita una fracción pequeña de los vectores.
 
 
 ---
