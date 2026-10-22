@@ -1,14 +1,12 @@
 # Workshop RAG · SI3003 Inteligencia Artificial
 
-- **Nombre:** …
-- **Código estudiantil:** …
-- **Usuario de GitHub:** …
-- **Fecha:** 21 de octubre de 2026
+- **Nombre:** William Villa
+- **Código estudiantil:** 1000304912
+- **Usuario de GitHub:** [wavilla1](https://github.com/wavilla1)
+- **Fecha:** 22 de octubre de 2026
 - **Entrega a:** jipadillab@eafit.edu.co
 
 ## Progreso
-
-Reemplaza esta tabla con la que genera el botón «Copiar mi progreso en Markdown» de la página de Tareas, o llénala a mano.
 
 | ID | Tarea | Puntos | Hecha | Evidencia |
 |---|---|---:|:---:|---|
@@ -17,11 +15,11 @@ Reemplaza esta tabla con la que genera el botón «Copiar mi progreso en Markdow
 | T3 | Inserción frente a búsqueda | 2 | ⬜ | |
 | T4 | El invariante de FAISSVectorStore | 2 | ⬜ | |
 | T5 | El costo de la fuerza bruta | 2 | ⬜ | |
-| A1 | Ejecuta la app RAG de punta a punta | 4 | ⬜ | |
+| A1 | Ejecuta la app RAG de punta a punta | 4 | ✅ | [notebook 02b](notebooks/02b_rag_app_nvidia_nim_colab.ipynb) · [RESPUESTAS A1](RESPUESTAS.md#a1--ejecuta-la-app-rag-de-punta-a-punta) |
 | A2 | Tu propio corpus de documentos | 6 | ⬜ | |
 | A3 | Ingeniería del prompt (antes y después) | 5 | ⬜ | |
 | A4 | Muestra el score de similitud en las fuentes | 5 | ⬜ | |
-| B1 | Ejecuta el RAG de papers y evalúa con el ground truth | 6 | ⬜ | |
+| B1 | Ejecuta el RAG de papers y evalúa con el ground truth | 6 | ✅ | [notebook 03](notebooks/03_rag_workshop_papers_nvidia_nim_colab.ipynb) · [RESPUESTAS B1](RESPUESTAS.md#b1--ejecuta-el-rag-de-papers-y-evalúa-con-el-ground-truth) |
 | B2 | Experimentos con chunk_size, k y score_threshold | 8 | ⬜ | |
 | B3 | Preguntas trampa: ¿el RAG admite que no sabe? | 6 | ⬜ | |
 | B4 | Preguntas en español sobre papers en inglés | 5 | ⬜ | |
@@ -34,7 +32,7 @@ Reemplaza esta tabla con la que genera el botón «Copiar mi progreso en Markdow
 | C5 | MMR frente a similitud pura (reto) | 8 | ⬜ | |
 | C6 | Persistencia del índice en disco (reto) | 8 | ⬜ | |
 
-**Autoevaluación:** … / 100 puntos.
+**Autoevaluación:** 10 / 100 puntos (A1 + B1).
 
 ## Cómo ejecutar mis notebooks
 
@@ -46,4 +44,9 @@ Reemplaza esta tabla con la que genera el botón «Copiar mi progreso en Markdow
 
 ## Decisiones y aprendizajes
 
-Escribe 5 a 8 líneas sobre lo más importante que descubriste hoy.
+- Monté de punta a punta una app RAG en Colab: embeddings con `nvidia/nemotron-3-embed-1b`, índice Qdrant en memoria y generación con `nvidia/nemotron-3-super-120b-a12b`.
+- La interfaz se publicó con Gradio (`share=True`), que genera un enlace público temporal mientras el runtime de Colab sigue activo.
+- En el RAG de papers, el modelo generador original no estaba disponible (404) y varios otros estaban retirados (410); encontré uno que funcionaba probando una lista de candidatos.
+- Los modelos de razonamiento necesitan más `max_completion_tokens`: con 800 las respuestas salían vacías, con 4000 respondió bien las 5 preguntas y el bonus.
+- La API key se maneja con los Secrets de Colab (`NVIDIA_API_KEY`), nunca dentro del código ni del repositorio.
+- Con solo 4 documentos cortos, cada documento quedó en un único chunk, así que la recuperación depende de qué tan parecido es el texto de la pregunta al de cada documento.
